@@ -1,10 +1,13 @@
 let operatorPressed = false;
 let num2Pressed = false;
 let num1Pressed = false;
+let resultPressed = false;
+let overflow = false;
 let num1 = 0;
 let num2 = 0;
 let operator;
 let result = 0;
+const MAX_LIMIT = 13;
 const screen = document.querySelector(".screen");
 //if i press operator after num1
 //then nothing will change
@@ -21,7 +24,17 @@ numbers.forEach((num)=>{
             clearScreen();
             operatorPressed = false;
         }
+        if (overflow) {
+            clearScreen();
+            overflow = false;
+        }
+
         pushOnScreen(e.target);
+        
+        if (isOverflow(getNumberFromScreen())) {
+            reset();
+            displayOverflow();
+        }
     })
 })
 
@@ -35,18 +48,32 @@ operators.forEach((op)=>{
             num1 = result;
             num2Pressed = false;
         }
-        if (!operatorPressed && !num1Pressed) {
+        if ((!operatorPressed && !num1Pressed) || resultPressed) {
             num1Pressed = true;
             num1 = getNumberFromScreen();
+            resultPressed = false;
         }
         operator = e.target.classList[0];
         operatorPressed = true;
     })
 })
 
+const resultButton = document.querySelector("#result");
+resultButton.addEventListener("click",()=>{
+    if (num2Pressed) {
+        num2 = getNumberFromScreen();
+        result = calculate();
+        displayResult();
+        num2Pressed = false;
+        num1Pressed = false;
+        operatorPressed = true;
+        resultPressed = true;
+    }
+})
+
 const clearButton = document.querySelector("#clear");
 clearButton.addEventListener("click",()=>{
-    clearScreen();
+    reset();
 })
 
 const deleteButton = document.querySelector("#delete");
@@ -56,6 +83,17 @@ deleteButton.addEventListener("click",()=>{
     str.pop();
     screen.textContent = str.join('');
 })
+
+function reset() {
+    clearScreen();
+    operatorPressed = false;
+    num1Pressed = false;
+    num2Pressed = false;
+    resultPressed = false;
+    num1 = 0;
+    num2 = 0;
+    result = 0;
+}
 
 function pushOnScreen(num) {
     screen.textContent += num.textContent;
@@ -74,7 +112,7 @@ function calculate() {
     switch(operator) {
         case 'divide':
             return num1/num2;
-        case 'multilply':
+        case 'multiply':
             return num1*num2;
         case 'minus':
             return num1-num2;
@@ -86,6 +124,16 @@ function calculate() {
 function displayResult() {
     clearScreen();
     screen.textContent = result;
+}
+
+function displayOverflow() {
+    clearScreen();
+    screen.textContent = "overflow";
+    overflow = true;
+}
+
+function isOverflow(value) {
+    return value.toString().length > MAX_LIMIT;
 }
 
 
