@@ -1,0 +1,1 @@
+This is a simple calculator application built with HTML, CSS, and JavaScript. It performs basic arithmetic operations including addition, subtraction, multiplication, and division. The application supports handling large numbers and will display an "overflow" message if the result exceeds a certain length.
