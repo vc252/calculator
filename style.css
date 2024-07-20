@@ -24,6 +24,12 @@ body {
 .screen {
     background-color: olive;
     height: 120px;
+    display: flex;
+    justify-content: right;
+    align-items: center;
+    font-size: 50px;
+    box-sizing: border-box;
+    padding: 10px;
 }
 
 .button-container {
