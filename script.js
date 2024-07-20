@@ -43,7 +43,12 @@ operators.forEach((op)=>{
     op.addEventListener("click",(e)=>{
         if (num2Pressed) {
             num2 = getNumberFromScreen();
-            result = calculate();
+            result = BigInt(calculate());
+            if (isOverflow(result)) {
+                reset();
+                displayOverflow();
+                return;
+            }
             displayResult();
             num1 = result;
             num2Pressed = false;
@@ -63,6 +68,11 @@ resultButton.addEventListener("click",()=>{
     if (num2Pressed) {
         num2 = getNumberFromScreen();
         result = calculate();
+        if (isOverflow(result)) {
+            reset();
+            displayOverflow();
+            return;
+        }
         displayResult();
         num2Pressed = false;
         num1Pressed = false;
@@ -111,6 +121,11 @@ function clearScreen() {
 function calculate() {
     switch(operator) {
         case 'divide':
+            if (num2==0) {
+                reset();
+                displayOverflow();
+                return;
+            }
             return num1/num2;
         case 'multiply':
             return num1*num2;
