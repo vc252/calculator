@@ -31,6 +31,14 @@ clearButton.addEventListener("click",()=>{
     clearScreen();
 })
 
+const deleteButton = document.querySelector("#delete");
+deleteButton.addEventListener("click",()=>{
+    let str = screen.textContent;
+    str = Array.from(str);
+    str.pop();
+    screen.textContent = str.join('');
+})
+
 function printOnScreen(num) {
     screen.textContent += num.textContent;
 }
